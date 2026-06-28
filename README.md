@@ -49,7 +49,7 @@ All aggregated results, performance metrics, and visualizations are located in t
 
 ### 🛠️ Requirements
 
-- Python Requirement
+- Python Requirement: 
 Python 3.10 or later is required. Python 3.11 is recommended.
 The experiments were developed with PyTorch 2.5.1 and torchvision 0.20.1.
 
