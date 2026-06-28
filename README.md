@@ -6,7 +6,9 @@ This repository contains scripts, configurations, and results from a comprehensi
 
 ### 📋 Overview
 
-This project evaluates the performance characteristics of distributed machine learning workflows deployed on cloud infrastructure across multiple experimental scenarios. The analysis covers various metrics including throughput, latency, and resource utilization.
+This master’s thesis investigates the performance of hybrid cloud machine-learning workflows in which model training is performed on a private GPU machine while dataset storage is provided by Amazon S3. A ResNet-18 model was trained on the Tiny ImageNet dataset under three deployment scenarios. Each scenario was executed 30 times, and metrics such as training time, throughput, data-loading latency, GPU utilization, CPU and memory usage, S3 data transfer, cache behavior, and validation accuracy were collected and compared.
+
+The results show that directly streaming training samples from S3 introduces a significant input bottleneck and leads to low GPU utilization. Applying local caching, cache warmup, prefetching, and increased DataLoader parallelism substantially improves steady-state training performance, although the initial cache-warmup stage increases the total workflow duration.
 
 ### 📁 Repository Structure
 
@@ -31,13 +33,13 @@ UAB-RICSE-TFM-Project/
 ### 🔬 Scenarios
 
 #### Scenario A
-Description of experimental setup, hypothesis, and key parameters.
+Scenario A represents the private baseline. The Tiny ImageNet dataset, training process, and output files are stored and processed on the private machine. Training data are read directly from local disk using four DataLoader workers, without relying on public-cloud storage during model execution.
 
 #### Scenario B
-Description of experimental setup, hypothesis, and key parameters.
+Scenario B implements a basic hybrid workflow. The model is trained on the private GPU machine, while the dataset remains in Amazon S3. Images are downloaded on demand during training and validation, without maintaining a complete local copy. This scenario evaluates the performance overhead introduced by remote object-storage access.
 
 #### Scenario C
-Description of experimental setup, hypothesis, and key parameters.
+Scenario C extends the hybrid workflow with data-pipeline optimizations. Before training, the dataset is downloaded from S3 into a local cache. During model execution, 16 DataLoader workers read and preprocess cached images in parallel, while prefetching prepares future batches in memory. This approach reduces repeated S3 access and improves data-loading latency, throughput, and GPU utilization.
 
 ### 📊 Results
 
@@ -50,17 +52,6 @@ All aggregated results, performance metrics, and visualizations are located in t
 - Python 3.x
 - Required packages: in requirements files for every scenario.
   
-### 📝 Usage
-
-Instructions for running scripts and reproducing results:
-
-```bash
-# Example: Running a scenario
-python Scenario_A/scripts/main.py
-
-# Example: Generating results
-python Results/analysis/generate_report.py
-```
 
 ### 📚 Thesis Information
 
