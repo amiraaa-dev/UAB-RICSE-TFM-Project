@@ -1,0 +1,12 @@
+# PyTorch and torchvision are provided by the base image:
+#   pytorch/pytorch:2.5.1-cuda12.4-cudnn9-runtime
+# Do not install torch here to avoid replacing the CUDA-enabled build in the image.
+
+# Progress bars used by the training script
+tqdm>=4.66.0
+
+# MLflow with Databricks tracking support
+mlflow[databricks]>=3.1
+
+# Explicit Databricks SDK dependency for Databricks-hosted MLflow tracking
+databricks-sdk>=0.28.0
